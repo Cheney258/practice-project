@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机菜谱</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>随机菜谱</h1>
+    <div class="flex">
+      <form class="flex" id="submit">
+        <input type="text" id="search" placeholder="请输入关键字">
+        <button type="submit" class="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      <button class="random-btn" id="random">
+        <i class="fas fa-random"></i>
+      </button>
+    </div>
+
+    <!-- 搜索结果头部 -->
+    <div id="result-heading"></div>
+    <!-- 搜索结果 -->
+    <div id="meals" class="meals"></div>
+    <!-- 随机菜单/单个菜单详情 -->
+    <div id="single-meal"></div>
+  </div>
+</body>
+
+</html>
