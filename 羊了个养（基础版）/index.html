@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>羊了个养</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .main {
+      position: relative;
+    }
+
+    .item {
+      position: absolute;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: left .3s, top .3s, transform .3s;
+    }
+
+    .item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: background-color .2s;
+    }
+
+    .item.disabled:after {
+      background-color: rgba(0, 0, 0, .7);
+    }
+
+    .move-list {
+      border: 1px solid #ddd;
+      background-color: #ddd;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 卡牌容器 -->
+  <div class="main"></div>
+  <!-- 消除卡牌的容器 -->
+  <div class="move-list"></div>
+
+
+  <script>
+    // 基础数据
+    const simpleData = [{
+        name: '🐅',
+        color: '#ff1100'
+      },
+      {
+        name: '🐇',
+        color: '#ff8800'
+      },
+      {
+        name: '🐂',
+        color: 'green'
+      },
+      {
+        name: '🐏',
+        color: '#779922'
+      },
+      {
+        name: '🐍',
+        color: 'blue'
+      },
+      {
+        name: '🐀',
+        color: '#335577'
+      },
+    ]
+
+    // 第一步 绘图
+    // 卡片大小
+    const size = 30
+    const rows = 10 // 行数
+    const cols = 10 // 列数
+    const oneGroupCount = 3 // 3个一组小消除
+    const group = 6 //  每个消除友6曾
+    const layersCount = 6 //层数6层
+    const cellHtml = [] //
+    const renderData = Array.from(new Array(oneGroupCount * group)).map(v => {
+      return simpleData.map(v => ({
+        ...v
+      }))
+    }).flat().sort(v => Math.random() - 0.5)
+
+    for (let ly = layersCount - 1; ly >= 1; ly--) {
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          let pyStep = (ly + 1) % 2 === 0 ? size / 2 : 0
+          let item = (Math.random() > 0.7 && renderData.pop())
+          if (item) {
+            cellHtml.push(
+              `<div class="item" id="m${ly}-${i}-${j}" onclick="move(this)" style="width:${size}px;height:${size}px;left:${size * j + pyStep}px;top:${size * i + pyStep}px;background-color:${item.color};">${item.name}</div>`
+              )
+          }
+        }
+      }
+    }
+
+    const main = document.querySelector(".main")
+    const moveList = document.querySelector('.move-list')
+    main.innerHTML = cellHtml.reverse().join('')
+    main.style.height = `${size * rows  + size * 2}px`
+    main.style.width = `${size * cols + size * 2}px`
+    moveList.style.height = `${size}px`
+    moveList.style.width = `${size * 6}px`
+
+
+    // 第二步：计算出被挡住的底牌，并标注颜色
+    const checkDisables = () => {
+      main.querySelectorAll('.item').forEach((v, i) => {
+        const arr = v.id.substring(1).split('-').map(v => Number(v))
+        const isPy = (arr[0] + 1) % 2 === 0
+        for (let i = arr[0] + 1; i <= layersCount - 1; i++) {
+          const isPyB = (i + 1) % 2 === 0
+          if (isPy === isPyB) {
+            const el = main.querySelector(`#m${i}-${arr[1]}-${arr[2]}`)
+            if (el) {
+              v.classList.add('disabled')
+              break
+            }
+          } else if (isPy && !isPyB) {
+            const result = [
+              `${i}-${arr[1]}-${arr[2]}`,
+              `${i}-${arr[1]}-${arr[2]+1}`,
+              `${i}-${arr[1]+1}-${arr[2]}`,
+              `${i}-${arr[1]+1}-${arr[2]+1}`
+            ].every(k => {
+              return !main.querySelector('#m' + k)
+            })
+            if (!result) {
+              v.classList.add('disabled')
+              break;
+            } else {
+              v.classList.remove('disabled')
+            }
+          } else if (!isPy && isPyB) {
+            const result = [
+              `${i}-${arr[1]}-${arr[2]}`,
+              `${i}-${arr[1]}-${arr[2]-1}`,
+              `${i}-${arr[1]-1}-${arr[2]}`,
+              `${i}-${arr[1]-1}-${arr[2]-1}`
+            ].every(k => {
+              return !main.querySelector('#m' + k)
+            })
+            if (!result) {
+              v.classList.add('disabled')
+              break;
+            } else {
+              v.classList.remove('disabled')
+            }
+          }
+        }
+      })
+    }
+
+    // 第三步：点击卡片进行消除计算
+    let canMove = true
+    const move = (me) => {
+      let left = moveList.offsetLeft
+      let top = moveList.offsetTop
+      if (!canMove || me.className.indexOf('disabled') >= 0) return
+      canMove = false
+      if (moveList.children.length > 0) {
+        let el = moveList.lastElementChild
+        left = el.offsetLeft + size
+      }
+      me.style.top = `${top}px`
+      me.style.left = `${left}px`
+      me.transitionNamesCount = 0
+      me.ontransitionend = (e) => {
+        me.transitionNamesCount++
+        if (me.transitionNamesCount === 2) {
+          moveEnd(me)
+          canMove = true
+        }
+      }
+    }
+    // 动画结束后的计算
+    const moveEnd = (me) => {
+      me.ontransitionend = null
+      me.setAttribute('onclick', '')
+      moveList.appendChild(me)
+      // 消除
+      const findResult = [...moveList.children].filter(v => v.innerHTML === me.innerHTML)
+      if (findResult.length === 3) {
+        findResult.forEach(v => {
+          v.ontransitionend = () => {
+            moveList.removeChild(v)
+            // 消除一组后，剩余的向前归位
+            ;
+            [...moveList.children].forEach((v, i) => {
+              v.style.left = `${i*size + moveList.offsetLeft}px`
+            })
+            if (moveList.children.length === 6) {
+              alert('游戏结束！！！')
+              return location.reload()
+            } else if (main.children.length === 0) {
+              return alert('恭喜通关！！！')
+            }
+          }
+          setTimeout(() => v.style.transform = 'scale(0)')
+        })
+      }
+
+      checkDisables()
+    }
+
+    checkDisables()
+  </script>
+</body>
+
+</html>
