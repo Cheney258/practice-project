@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>番茄时钟</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="index.js" defer></script>
+</head>
+
+<body>
+  <h1>番茄时钟</h1>
+  <div class="container" id="container">
+    <div class="timer" id="timer">
+      <h2>session</h2>
+      <div class="time" id="time">
+        <span id="minutes">25</span>
+        :
+        <span id="seconds">00</span>
+      </div>
+      <div class="btns" id="btns">
+        <button type="button" class="start" id="start">Start</button>
+        <button type="button" class="reset" id="reset">Reset</button>
+      </div>
+    </div>
+    <div class="control" id="control">
+      <div class="left" id="left">
+        <h3>Session length</h3>
+        <div class="adjust_time" id="adjust_session_time">
+          <span class="top" id="l_top"> > </span>
+          <p><span id="sTime">25</span>min</p>
+          <span class="bottom" id="l_bottom"> > </span>
+        </div>
+      </div>
+      <div class="right" id="right">
+        <h3>Break length</h3>
+        <div class="adjust_time" id="adjust_break_time">
+          <span class="top" id="r_top"> > </span>
+          <p><span id="bTime">5</span>min</p>
+          <span class="bottom" id="r_bottom"> > </span></span>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

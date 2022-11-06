@@ -1,0 +1,117 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #171717;
+  cursor: pointer;
+}
+
+h1{
+  font-size: 50px;
+  line-height: 100px;
+  color: antiquewhite;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.container{
+  width: 780px;
+  height: 540px;
+  background-color: aquamarine;
+  text-align: center;
+  border-radius: 50px;
+}
+
+.timer{
+  width: 100%;
+  height: 70%;
+  border-radius: 50px 50px 0 0 ;
+  background-color: #eb144c;
+  color: white;
+}
+.timer h2{
+  font-size: 30px;
+  line-height: 100px;
+  padding-top: 30px;
+}
+.timer .time{
+  font-size: 7rem;
+}
+.timer .btns button{
+  width: 110px;
+  height: 50px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 10px;
+  margin: 25px 10px;
+}
+.timer .btns button:hover{
+  background-color: #171717;
+  color: white;
+}
+
+
+.control{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30%;
+  border-radius: 0 0 50px 50px;
+  background-color: white;
+}
+
+.control .left, .right{
+  width: 200px;
+  height: 80px;
+  /* background-color: aquamarine; */
+  margin: 0 20px;
+}
+
+.control .adjust_time{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.control .adjust_time>span{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  background-color: #eb144c;
+  margin: 15px 20px;
+  border-radius: 50%;
+  color: white;
+}
+.control .adjust_time>span:hover{
+  background-color: #171717;
+}
+.control .adjust_time> .top{
+  transform: rotate(-90deg);
+}
+.control .adjust_time> .bottom{
+  transform: rotate(90deg);
+}
+
+@media (max-width: 800px) {
+  .container{
+    width: 480px;
+  }
+}
+
+@media (max-width:600px) {
+  .timer, .control{
+    border-radius: 0;
+  }
+}
