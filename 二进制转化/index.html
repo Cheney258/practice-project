@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>进制转化器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 600px;
+      height: 400px;
+      margin: 150px auto;
+      /* background-color: #; */
+    }
+
+    #shi,
+    #er {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    select {
+      height: 25px;
+      margin-bottom: 10px;
+    }
+
+    .btn{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      width: 60px;
+      height: 30px;
+      margin: 5px 0;
+    }
+
+    textarea {
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    textarea:focus {
+      outline: none;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="shi">
+      <select name="" id="leftOpt">
+        <option value="2">2进制</option>
+        <option value="8">8进制</option>
+        <option value="10" selected>10进制</option>
+        <option value="16">16进制</option>
+      </select>
+      <textarea name="" id="lValue" cols="30" rows="10"></textarea>
+    </div>
+    <div class="btn">
+      <button id="btn">转化</button>
+      <button id="clear">清除</button>
+    </div>
+    <div id="er">
+      <select name="" id="rightOpt">
+        <option value="2" >2进制</option>
+        <option value="8">8进制</option>
+        <option value="10" selected>10进制</option>
+        <option value="16">16进制</option>
+      </select>
+      <textarea name="" id="rValue" cols="30" rows="10" disabled></textarea>
+    </div>
+  </div>
+  <script>
+    const right = document.querySelector('#rValue')
+    const left = document.querySelector('#lValue')
+    const btn = document.querySelector('#btn')
+    const clear = document.querySelector('#clear')
+    const leftOpt = document.querySelector('#leftOpt')
+    const rightOpt = document.querySelector('#rightOpt')
+
+    let leftValue = 2
+    let rightValue = 10
+
+    left.addEventListener('change', () => {
+      if (left.value > 0) {
+        right.setAttribute('disabled', 'disabled')
+      } else {
+        right.removeAttribute('disabled')
+      }
+    })
+
+    leftOpt.addEventListener('change', () => {
+      leftValue = leftOpt.options[leftOpt.selectedIndex].value
+    })
+    rightOpt.addEventListener('change', () => {
+      rightValue = rightOpt.options[rightOpt.selectedIndex].value
+    })
+
+
+    btn.addEventListener('click', () => {
+      let reg1 = /^[0-9a-f]+$/
+      if (left.value && reg1.test(left.value)) {
+        let tem = 0 // 用于存放先转换成十进制的数
+        let reg = /^[g-z]$/ // 十六进制不能含有g-z的字母  
+        // parseInt 方法只能把低进制转换成高进制
+        // toString 方法只能把十进制转化成其他进制
+        // 核心思想：先把其他进制的数转换成十进制，先转换成对应的进制
+        if (leftValue == 2) {
+          if (!left.value.toString().split("").some(item => item > 1)) {
+            tem = parseInt(left.value, 2)
+          } else {
+            alert('该数值不是二进制！')
+          }
+        } else if (leftValue == 8) {
+          if (!left.value.toString().split("").some(item => item > 8)) {
+
+            tem = parseInt(left.value, 8)
+          } else {
+            alert('该数值不是八进制！')
+          }
+        } else if (leftValue == 16) {
+          if (!reg.test(left.value)) {
+            tem = parseInt(left.value, 16)
+          } else {
+            alert('该数值不是十六进制！')
+          }
+        } else {
+          tem = parseInt(left.value)
+        }
+
+        if (rightValue == 2) {
+          right.value = tem.toString(2)
+
+        } else if (rightValue == 8) {
+          right.value = tem.toString(8)
+        } else if (rightValue == 10) {
+          right.value = tem.toString(10)
+        } else {
+          right.value = tem.toString(16)
+        }
+
+      } else {
+        alert('该值不是数值！请重新输入！')
+      }
+    })
+
+    clear.addEventListener('click',()=>{
+      right.value=''
+      left.value=''
+    })
+  </script>
+</body>
+
+</html>
