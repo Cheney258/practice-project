@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS扫雷</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+  <div class="main" id="main">
+    <table id="landmine">
+      <!-- 格子动态 -->
+    </table>
+    <div class="operation">
+      <div class="tip">
+        剩余雷数：<span class="light red"  id="landMineCount">0</span>个
+      </div>
+      <div class="tip">
+        持续时间：<span class="light f60" id="costTime">0</span>秒
+      </div>
+      <fieldset>
+        <legend>难度选择：</legend>
+        <input type="radio" name="level" value="10" id="llevel" checked="cheched" />
+        <label for="llevel">初级（10*10）</label><br />
+        <input type="radio" name="level" value="15" id="mlevel" />
+        <label for="mlevel">中级（15*15）</label> <br />
+        <input type="radio" name="level" value="20" id="hlevel">
+        <label for="mlevel">高级（20*20）</label> <br />
+      </fieldset>
+      <input type="button" id="begin" value="开始游戏">
+      <div class="tip txtleft">
+        提示：
+        <ul>
+          <li>1、点击“开始游戏”游戏开始计时</li>
+          <li>2、游戏过程中点击“开始游戏”将开始新游戏</li>
+        </ul>
+      </div>
+    </div>
+    <!-- 解决子盒子浮动后父盒子高度塌陷问题：
+      1.增加一个清除浮动，让父容器知道高度。请注意清除浮动的容器中有一个空格
+      2.最後一个子元素增加一个清除浮动，让父容器知道高度。请注意清除浮动的容器中有一个空格
+      3.增加一个<br />并设置样式为clear:both
+    -->
+    <!-- <div style="height: 1px;margin-top: -1px;clear: both;overflow: hidden;"></div> -->
+    <!-- <div style="font: 0px/0px sans-serif;clear:both;display:block;"></div> -->
+    <br style="clear:both;" />
+  </div>
+
+  <script src="./jms.js"></script>
+  <script src="./index.js"></script>
+</body>
+
+</html>
